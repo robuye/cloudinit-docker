@@ -1,0 +1,53 @@
+#cloud-config
+
+bootcmd:
+  - echo "Bootcmd"
+  - echo "Installing chef-client on Ubuntu 16 using Omnibus does not work"
+  - echo "https://bugs.launchpad.net/cloud-init/+bug/1583837"
+  - hash chef-client || curl -L https://omnitruck.chef.io/install.sh | bash -s -- -v 11.12.8
+runcmd:
+  - echo "Runcmd"
+chef:
+  environment: "_default"
+  exec: false
+  exec_arguments: '' # run chef-client as part of cloud-init, do not daemonize
+  install_type: omnibus
+  version: "11.12.8"
+  server_url: "https://chef.example.com"
+  validation_cert: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEogIBAAKCAQEA3rhBzTsDuPwXj5dQqHa96frDk5yOCURbScEmSfllQ2A6dFdh
+    WIWmrSsQ0YQFBpK298DKgY6HJmwkmHFpl7WWd5bE039SvCYZZR7wC8Ybmp8h5dvk
+    ujgB60s006kkNHdVxckhBR4GiATlrGfahj9hmoDUP5CsJXlBuIPAuI4jR7Rg0jWe
+    dG05AkrpJDWS8td04elbTUdP8iT8utW9bbynJ7nOECMQQ+B7JUXDdGWBrx9q99Mp
+    QlJBwvRVrjqiV0D5wrWckB9eLGbNTcIzViapUBsyKl90xzYYzZojvL4VBQD6QYEe
+    omv8iZgVcLs/uSvQXo0uxGr6L8uZgsFQzF4QUQIDAQABAoIBADZxLASS7HIHjWrY
+    Pisv+3R6i9xFZKL3RqlcwZNLl2lE2IUf5vfQk9G4uT+92cyliHw/cEEDKh5GSRvK
+    fVlMVh+dhzd75CmB1qtVSLBYGN9PDuY1PlAW6MEvfRZQPj1k/l5+r8ekc0xEhjAC
+    ovQ2AhHWdAulva7bWSlVa4KxnAYmqKQmxaB4inkejpiiLuKd+9zrgue6Rb/Suona
+    AfQkTZsHNvvbMavTrW2hf989/ZBlAa21wonL4MbSE5ZVKNrWvH0CnJVug304CUP9
+    p7OmY6GjXZtMcnxbwe58mE/HRTi2lvo8fkGFoTQ92+CGMZbsmbSLl95z5u5rclGJ
+    prsHVQECgYEA/Ssp/GWhWprmK9TYWfw45/q6T5jcOH5kuoo7j8M+o+5ypNg19qCE
+    PudJGLIblOp3s6BD4HLP9VUZbTFGMUsQGwwv8kSk2FHy8Z+MGdgHJNXNqfyni8NM
+    HU8Nyzw9D56Fvp0dL65/sfsOq7dAzdtc4Cfaswl5Q/WXJxcu4lpHf2kCgYEA4TXq
+    jtR3cnrvxS9kQuwPApj0oCOvNPMi2Xq9qDr6wbdhFJZNJcxweloASVU2GMVhkA06
+    xzANuyjW+HYq2b+vYOwZ/5BFY/reHhfTF54907z80Bwr5Yz8nEgMRN9eO4p4rl2T
+    SlOMn4plnadKugOtj94lqSUOIlfTZ4m+JgNo1KkCgYAZgtv8PxF/W9SN3ijfCHeD
+    iNR1aOXoG3RzB7Lwza/mPQT4b4EglRQ+cnf/MRNuciIVy7SLTYZ/JlAlnK2CEhpR
+    X20FcL1bvwZIKtenUwmFQLY0xuzrPIbS/UBalntgs4yupI5oW6Eqgi38R78T/2Lg
+    g6OaHv5FRt4wZjmnPYmu4QKBgBair6eZbUQBXTYJdF9RkJSnQPcTfxmoUllff853
+    1xo/Ty+dh7WD3c4+W4cDXIOS2yJ6Ye0BRHAKQ8kHP3lRTdRFBrvsCT1qSoblyB64
+    lehBN3vHSRYyXHVsvGbzuGntmgGUgChZS2oBpAL7fIRDuF8cadadVdVX1HS0oHr7
+    nr65AoGAePdL/IJ2YrTARDNAJdA8HGygurwdoMXWnNeca19pzawQxOXmpS0etT+3
+    k7GmLyg8EAOq9bNvcU9fKvfxq2+x3nEMlhcIMhx9gpRR6q0QIr4u49k8D44HTfKB
+    yPK5XWULIwD6oQCvns+uVea5j5Oz1hSJD6j1s5m8oj9l+8JHTcg=
+    -----END RSA PRIVATE KEY-----
+  validation_name: chef-validator
+  run_list:
+    - "role[example]"
+write_files:
+  - content: "Hello world!"
+    owner: root:root
+    path: /tmp/hello-world
+    permissions: '0644'
+final_message: "\e[93mThe system is finally up\e[0m"
